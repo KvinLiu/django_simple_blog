@@ -18,8 +18,11 @@ from django.urls import path, include
 
 from django.conf import settings
 
+from posts import views
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("posts/", views.post_home, name="home"),
 ]
 
 if settings.DEBUG:
