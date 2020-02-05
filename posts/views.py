@@ -10,12 +10,28 @@ from django.http import HttpResponse
 # Post.objects.filter(title_icontains="...")
 # Post.objects.create(title="...", context="...")
 
+# import Forms
+from .forms import PostForm
+
 # import Models
 from .models import Post
 
 # the logic handle the request the browser/client make
 def post_create(request):
-    return HttpResponse("<h1>Create</h1>")
+    # form = PostForm()
+    form = PostForm(request.POST or None)
+    context = {"form": form}
+    if form.is_valid():
+        instance = form.save(commit=False)
+        print(form.cleaned_data.get("title"))
+        instance.save()
+    # if request.method == "POST":
+    #     print(request.POST.get("title"))
+    #     print(request.POST.get("context"))
+    #     Post.objects.create(title=...)
+
+    # return HttpResponse("<h1>Create</h1>")
+    return render(request, "post_form.html", context)
 
 
 def post_detail(request, id):
