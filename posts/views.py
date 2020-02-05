@@ -3,6 +3,15 @@ from django.http import HttpResponse
 
 # Create your views here.
 
+# QuerySet Basics with shell python manage.py shell
+# from posts.models import Post
+# Post.objects.all()
+# Post.objects.filter(title_icontains="...")
+# Post.objects.create(title="...", context="...")
+
+# import Models
+from .models import Post
+
 # the logic handle the request the browser/client make
 def post_create(request):
     return HttpResponse("<h1>Create</h1>")
@@ -14,7 +23,8 @@ def post_detail(request):
 
 
 def post_list(request):
-    context = {"title": "List"}
+    queryset = Post.objects.all()
+    context = {"object_list": queryset, "title": "List"}
     # if request.user.is_authenticated:
     #     context = {"title": "My User List"}
     # else:

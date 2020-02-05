@@ -20,5 +20,10 @@
     <![endif]-->
   <h1>Template is working</h1>
   <h2>{{ title }}</h2>
+  <ul>
+    {% for obj in object_list %}
+      <li>{{ obj.title }}</li>
+    {% endfor %}
+  </ul>
 </body>
 </html>
