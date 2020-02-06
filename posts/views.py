@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -26,7 +27,13 @@ def post_create(request):
         print(form.cleaned_data.get("title"))
         instance.save()
         # message success
+        messages.success(
+            request, "<a href='#'>Successfully</a> Created", extra_tags="html_safe"
+        )
         return HttpResponseRedirect(instance.get_absolute_url())
+    # else:
+    #     messages.success(request, "Not Successfully Created")
+
     # if request.method == "POST":
     #     print(request.POST.get("title"))
     #     print(request.POST.get("context"))
@@ -61,6 +68,7 @@ def post_update(request, id=None):
         instance = form.save(commit=False)
         instance.save()
         # message success
+        messages.success(request, "Item Saved")
         return HttpResponseRedirect(instance.get_absolute_url())
 
     context = {"title": instance.title, "instance": instance, "form": form}
