@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block head_title %}
+  {{ title }} | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  <h1>{{ title }} is Working</h1>
+  <ul>
+    {% for obj in object_list %}
+      <li>
+        <!-- <a href="{% url "posts:detail" id=obj.id %}">{{ obj.title }}</a> -->
+        <a href="{{obj.get_absolute_url}}">{{obj.title}}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock content %}

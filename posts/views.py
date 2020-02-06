@@ -58,7 +58,7 @@ def post_list(request):
     # else:
     #     context = {"title": "List"}
     # return HttpResponse("<h1>List</h1>")
-    return render(request, "index.html", context)
+    return render(request, "post_list.html", context)
 
 
 def post_update(request, id=None):
@@ -75,5 +75,6 @@ def post_update(request, id=None):
     return render(request, "post_form.html", context)
 
 
-def post_delete(request):
+def post_delete(request, id=None):
+    instance = get_object_or_404(Post, id=id)
     return HttpResponse("<h1>Delete</h1>")
