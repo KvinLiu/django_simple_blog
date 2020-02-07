@@ -4,7 +4,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 # Create your views here.
 
-# QuerySet Basics with shell python manage.py shell
 # from posts.models import Post
 # Post.objects.all()
 # Post.objects.get(id="...")

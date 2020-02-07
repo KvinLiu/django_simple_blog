@@ -1,18 +1,24 @@
-<!doctype html>
-<html class="no-js" lang="">
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block head_title %}Try Django 3.x{% endblock head_title %}</title>
+    <title>
+      {% block head_title %}Try Django 3.x{% endblock head_title %}
+    </title>
+    <link rel="stylesheet"
+          href="{% static 'css/base.css' %}"
+          type="text/css"
+          media="screen">
     <style type="text/css" media="screen">
      {% block style %}{% endblock style %}
     </style>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="viewport" content=
+          "width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <!-- Place favicon.ico in the root directory -->
-
   </head>
   <body>
     <!--[if lt IE 8]>
@@ -24,8 +30,7 @@
     <![endif]-->
     {% include "message_display.html" %}
     <div class="container">
-      {% block content %}
-      {% endblock content %}
+      {% block content %} {% endblock content %}
     </div>
   </body>
 </html>
