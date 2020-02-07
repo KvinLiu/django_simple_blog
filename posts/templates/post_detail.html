@@ -13,10 +13,8 @@
 </style>
 
 {% block content %}
-  <h1>{{ title }}</h1>
-  <p>{{ instance.title }}</p>
-  <p>{{ instance.context }}</p>
-  <p>{{ instance.timestamp }}</p>
-  <p>{{ instance.updated }}</p>
-  <p>{{ instance.id }}</p>
+<div class="col-sm-6 col-sm-offset-3">
+  <h1>{{ title }} <small>{{ instance.timestamp }}</small></h1>
+  <p>{{ instance.context|linebreaks }}</p>
+</div>
 {% endblock content %}

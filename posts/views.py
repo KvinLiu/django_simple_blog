@@ -76,4 +76,5 @@ def post_update(request, id=None):
 
 def post_delete(request, id=None):
     instance = get_object_or_404(Post, id=id)
-    return HttpResponse("<h1>Delete</h1>")
+    instance.delete()
+    return redirect("posts:list")
