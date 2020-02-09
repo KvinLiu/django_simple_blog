@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+from urllib.parse import quote_plus
 
 # Create your views here.
 
@@ -46,7 +47,8 @@ def post_create(request):
 def post_detail(request, slug):
     # instance = Post.objects.get(id=3)
     instance = get_object_or_404(Post, slug=slug)
-    context = {"title": instance.title, "instance": instance}
+    share_str = quote_plus(instance.context)
+    context = {"title": instance.title, "instance": instance, "share_string": share_str}
     return render(request, "post_detail.html", context)
 
 
