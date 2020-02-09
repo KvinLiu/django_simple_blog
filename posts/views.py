@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -50,8 +51,22 @@ def post_detail(request, id):
 
 
 def post_list(request):
-    queryset = Post.objects.all()
-    context = {"object_list": queryset, "title": "List"}
+    queryset = Post.objects.all()  # .order_by("-timestamp")
+    paginator = Paginator(queryset, 5)
+    page_request_var = "page"
+    page = request.GET.get(page_request_var)
+    try:
+        contact = paginator.page(page)
+    except PageNotAnInteger:
+        contact = paginator.page(1)
+    except EmptyPage:
+        contact = paginator.page(paginator.num_pages)
+
+    context = {
+        "object_list": contact,
+        "title": "List",
+        "page_request_var": page_request_var,
+    }
     # if request.user.is_authenticated:
     #     context = {"title": "My User List"}
     # else:
