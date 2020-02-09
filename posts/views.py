@@ -43,9 +43,9 @@ def post_create(request):
     return render(request, "post_form.html", context)
 
 
-def post_detail(request, id):
+def post_detail(request, slug):
     # instance = Post.objects.get(id=3)
-    instance = get_object_or_404(Post, id=id)
+    instance = get_object_or_404(Post, slug=slug)
     context = {"title": instance.title, "instance": instance}
     return render(request, "post_detail.html", context)
 
