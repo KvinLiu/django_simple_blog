@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from urllib.parse import quote_plus
 
 # Create your views here.
@@ -20,6 +20,8 @@ from .models import Post
 
 # the logic handle the request the browser/client make
 def post_create(request):
+    if not request.is_staff or not request.is_superuser:
+        raise Http404
     # form = PostForm()
     form = PostForm(request.POST or None, request.FILES or None)
     context = {"form": form}
@@ -78,6 +80,8 @@ def post_list(request):
 
 
 def post_update(request, id=None):
+    if not request.is_staff or not request.is_superuser:
+        raise Http404
     instance = get_object_or_404(Post, id=id)
     form = PostForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
@@ -92,6 +96,8 @@ def post_update(request, id=None):
 
 
 def post_delete(request, id=None):
+    if not request.is_staff or not request.is_superuser:
+        raise Http404
     instance = get_object_or_404(Post, id=id)
     instance.delete()
     return redirect("posts:list")
