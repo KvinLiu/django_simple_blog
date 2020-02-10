@@ -19,7 +19,9 @@
       <img src="{{ instance.image.url }}" alt="" class="img-responsive" />
     {% endif %}
     {#{ instance.context|truncatechars:40|urlify }#}
-    <h1>{{ title }} <small>{{ instance.timestamp|timesince }}</small></h1>
+    <h1>{{ title }}
+      {% if instance.draft %}<small><span style="color:red;">Draft</span></small>{% endif %}
+      <small>{{ instance.publish|timesince }}</small></h1>
     {% if instance.user.get_full_name %}
       <p>Author: {{ instance.user.get_full_name }}</p>
     {% endif %}

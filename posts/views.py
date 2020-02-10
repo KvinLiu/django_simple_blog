@@ -20,7 +20,7 @@ from .models import Post
 
 # the logic handle the request the browser/client make
 def post_create(request):
-    if not request.user.is_staff or not request.user.is_superuser:
+    if not request.user.is_superuser:
         raise Http404
     # form = PostForm()
     form = PostForm(request.POST or None, request.FILES or None)
@@ -80,10 +80,10 @@ def post_list(request):
     return render(request, "post_list.html", context)
 
 
-def post_update(request, id=None):
-    if not request.is_staff or not request.is_superuser:
+def post_update(request, slug=None):
+    if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
-    instance = get_object_or_404(Post, id=id)
+    instance = get_object_or_404(Post, slug=slug)
     form = PostForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -97,7 +97,7 @@ def post_update(request, id=None):
 
 
 def post_delete(request, id=None):
-    if not request.is_staff or not request.is_superuser:
+    if not request.is_superuser:
         raise Http404
     instance = get_object_or_404(Post, id=id)
     instance.delete()
