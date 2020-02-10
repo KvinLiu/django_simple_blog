@@ -20,6 +20,9 @@
     {% endif %}
     {#{ instance.context|truncatechars:40|urlify }#}
     <h1>{{ title }} <small>{{ instance.timestamp|timesince }}</small></h1>
+    {% if instance.user.get_full_name %}
+      <p>Author: {{ instance.user.get_full_name }}</p>
+    {% endif %}
     <div>
       <a href="https://www.facebook.com/sharer/sharer.php?url={{request.build_absolute_uri}}">
         Facebook

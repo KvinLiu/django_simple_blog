@@ -27,7 +27,8 @@ def post_create(request):
     context = {"form": form}
     if form.is_valid():
         instance = form.save(commit=False)
-        print(form.cleaned_data.get("title"))
+        instance.user = request.uesr
+        # print(form.cleaned_data.get("title"))
         instance.save()
         # message success
         messages.success(
