@@ -20,14 +20,14 @@ from .models import Post
 
 # the logic handle the request the browser/client make
 def post_create(request):
-    if not request.is_staff or not request.is_superuser:
+    if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
     # form = PostForm()
     form = PostForm(request.POST or None, request.FILES or None)
     context = {"form": form}
     if form.is_valid():
         instance = form.save(commit=False)
-        instance.user = request.uesr
+        # instance.user = request.uesr
         # print(form.cleaned_data.get("title"))
         instance.save()
         # message success
