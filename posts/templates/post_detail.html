@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load urlify %}
 
 {% block head_title %}
   {{ instance.title }} | {{ block.super }}
@@ -17,6 +18,7 @@
     {% if instance.image %}
       <img src="{{ instance.image.url }}" alt="" class="img-responsive" />
     {% endif %}
+    {#{ instance.context|truncatechars:40|urlify }#}
     <h1>{{ title }} <small>{{ instance.timestamp|timesince }}</small></h1>
     <div>
       <a href="https://www.facebook.com/sharer/sharer.php?url={{request.build_absolute_uri}}">
