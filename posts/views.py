@@ -2,6 +2,9 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.utils import timezone
+
+# from django.utils import timezone
 from urllib.parse import quote_plus
 
 # Create your views here.
@@ -20,7 +23,7 @@ from .models import Post
 
 # the logic handle the request the browser/client make
 def post_create(request):
-    if not request.user.is_superuser:
+    if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
     # form = PostForm()
     form = PostForm(request.POST or None, request.FILES or None)
@@ -50,13 +53,22 @@ def post_create(request):
 def post_detail(request, slug):
     # instance = Post.objects.get(id=3)
     instance = get_object_or_404(Post, slug=slug)
+    if instance.draft == True or instance.publish > timezone.now().date():
+        if not request.user.is_staff or not request.user.is_superuser:
+            raise Http404
     share_str = quote_plus(instance.context)
     context = {"title": instance.title, "instance": instance, "share_string": share_str}
     return render(request, "post_detail.html", context)
 
 
 def post_list(request):
-    queryset = Post.objects.all()  # .order_by("-timestamp")
+    # queryset = Post.objects.filter(draft=False).filter(
+    #     publish__lte=timezone.now()
+    # )  # .all()  # .order_by("-timestamp")
+    today = timezone.now().date()
+    queryset = Post.objects.active()
+    if request.user.is_staff or request.user.is_superuser:
+        queryset = Post.objects.all()
     paginator = Paginator(queryset, 5)
     page_request_var = "page"
     page = request.GET.get(page_request_var)
@@ -71,6 +83,7 @@ def post_list(request):
         "object_list": contact,
         "title": "List",
         "page_request_var": page_request_var,
+        "today": today,
     }
     # if request.user.is_authenticated:
     #     context = {"title": "My User List"}
