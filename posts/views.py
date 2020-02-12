@@ -3,6 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils import timezone
+from django.db.models import Q
 
 # from django.utils import timezone
 from urllib.parse import quote_plus
@@ -12,7 +13,7 @@ from urllib.parse import quote_plus
 # from posts.models import Post
 # Post.objects.all()
 # Post.objects.get(id="...")
-# Post.objects.filter(title_icontains="...")
+# Post.objects.filter(title__icontains="...")
 # Post.objects.create(title="...", context="...")
 
 # import Forms
@@ -69,6 +70,16 @@ def post_list(request):
     queryset = Post.objects.active()
     if request.user.is_staff or request.user.is_superuser:
         queryset = Post.objects.all()
+
+    query = request.GET.get("q")
+    if query:
+        queryset = queryset.filter(
+            Q(title__icontains=query)
+            | Q(context__icontains=query)
+            | Q(user__first_name__icontains=query)
+            | Q(user__last_name__icontains=query)
+        ).distinct()
+
     paginator = Paginator(queryset, 5)
     page_request_var = "page"
     page = request.GET.get(page_request_var)
